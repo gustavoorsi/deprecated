@@ -1,0 +1,31 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: referaice-web
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: false #set to false to not send the connection request each time (for instance when running a test case that doesn't need eureka)
+    fetchRegistry: false #set to false to not send the connection request each time (for instance when running a test case that doesn't need eureka)
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+      
+management:
+  context-path: /actuator
+  security:
+    role: ADMIN #ADMIN is the default role, but we explicitly set it. 
+      
+
+spring.social.twitter.consumer.key: 
+spring.social.twitter.consumer.secret: 
+
+spring.social.linkedin.app.id: 
+spring.social.linkedin.app.secret: 

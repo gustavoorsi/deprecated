@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.referaice</groupId>
+		<artifactId>referaice-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<packaging>jar</packaging>
+	<name>referaice-common-api</name>
+	<description>Microservice that expose common RESTful APIs for referaice.com</description>
+	<artifactId>referaice-common-api</artifactId>
+
+	<properties>
+		<main.basedir>${basedir}/..</main.basedir>
+		<jsonpath.version>0.9.0</jsonpath.version>
+	</properties>
+
+
+	<dependencies>
+
+
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+		<!-- START: Local Dependencies. Dependencies on our own projects............................ -->
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+		<dependency>
+			<groupId>com.referaice</groupId>
+			<artifactId>referaice-model</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.referaice</groupId>
+			<artifactId>referaice-service</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+		<!-- END: Local Dependencies................................................................ -->
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+
+
+
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+		<!-- START: Web and REST. .................................................................. -->
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+		<!-- END: Web and REST...................................................................... -->
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+
+
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+		<!-- START: Cloud integration. Some dependencies for cloud config, proxying,................ -->
+		<!-- service discovery, etc................................................................. -->
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+		<dependency>
+			<!-- lib to centralize all config properties in the cloud under the project 
+				referaice-cloudconfig. I'm saving the server port number for this microservice 
+				so referaice-cloudconfig should be run first. -->
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-config-client</artifactId>
+		</dependency>
+
+		<dependency>
+			<!-- needed by cloud config in order to set the module name. bootstrap.yml -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<dependency>
+			<!-- automatic discovery service lib. Note that eureka lib has actuator 
+				lib as a dependency but we explicitly declare it because cloud-config-client 
+				needs it as well (if we decide to remove eureka lib then cloud-config-client 
+				will still have the lib.). -->
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-eureka</artifactId>
+		</dependency>
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+		<!-- END: Cloud integration................................................................. -->
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+
+
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+		<!-- START: Security dependencies. Oauth2 is used to connect to rest api.................... -->
+		<!-- services............................................................................... -->
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+		<dependency>
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth2</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+		<!-- END: Security dependencies............................................................. -->
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+
+
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+		<!--START: Test integration. ............................................................... -->
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+		<dependency>
+			<!-- A Java DSL for reading JSON documents -->
+			<!-- JsonPath expressions always refer to a JSON structure in the same 
+				way as XPath expression are used in combination with an XML document. The 
+				"root member object" in JsonPath is always referred to as $ regardless if 
+				it is an object or array. JsonPath expressions can use the dot–notation $.store.book[0].title 
+				or the bracket–notation $['store']['book'][0]['title'] -->
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path-assert</artifactId>
+			<version>${jsonpath.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+		<!--END: Test integration................................................................... -->
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+
+
+
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+		<!--START: Persistence integration.......................................................... -->
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
+		</dependency>
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+		<!--END: Persistence integration............................................................ -->
+		<!-- ....................................................................................... -->
+		<!-- ....................................................................................... -->
+
+
+
+	</dependencies>
+
+</project>

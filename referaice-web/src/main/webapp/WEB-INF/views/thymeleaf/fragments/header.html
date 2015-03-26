@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+	<head>
+		<!--/*  Each token will be replaced by their respective titles in the resulting page. */-->
+		<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">Layout title</title>
+		<meta charset="utf-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		
+		<!-- CSS resources -->
+	    <link href="../../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}"/>
+		<link href="../../../../resources/css/bootstrap/bootstrap.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap/bootstrap.css}"/>
+	    
+		<!-- javascript resources -->
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+	    <script src="../../../../resources/js/bootstrap/bootstrap.js" th:src="@{/resources/js/bootstrap/bootstrap.min.js}"></script>
+		<script src="../../../../resources/js/knockout/knockout.js" th:src="@{/resources/js/knockout/knockout.js}"></script>
+	</head>
+	
+	<body>
+	
+		<!-- header -->
+		<div th:fragment="header">
+			<!-- navbar navbar-default -->
+			<div class="navbar navbar-default" role="navigation">
+			
+				<!-- navbar-header -->
+				<div class="navbar-header">
+					
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+				
+					<span class="navbar-brand">Referaice</span>
+				</div><!-- /navbar-header -->
+			
+				<!-- navbar -->
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li th:classappend="${page == 'home' ? 'active' : ''}"><a href="#" th:href="@{/}">Home</a></li>
+						<li th:classappend="${page == 'companies' ? 'active' : ''}"><a href="#" th:href="@{/companies}">Companies</a></li>
+						<li><a href="#">About Us</a></li>
+						<li><a href="#">Contact</a></li>
+						<li th:classappend="${page == 'login' ? 'active' : ''}" th:if="${#authorization.expression('!isAuthenticated()')}"><a href="#" th:href="@{/login}">Login</a></li>
+						<li th:if="${#authorization.expression('isAuthenticated()')}"><a href="#" th:href="@{/logout}">Logout</a></li>
+						<li th:if="${#authorization.expression('isAuthenticated()')}">Wellcome <span th:text="${#authentication.name}"> Annonymous </span></li>
+					</ul>
+				</div><!-- /navbar -->
+			
+			</div><!-- /navbar navbar-default -->
+		</div><!-- /header -->
+		
+	</body>
+	
+</html>

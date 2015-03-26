@@ -1,0 +1,15 @@
+server:
+ port: 8888
+ 
+spring:
+  application:
+    name: CONFIGSERVER
+  cloud:
+    config:
+      server:
+        uri: https://github.com/gustavoorsi/deprecated/config
+        
+eureka:
+ client:
+  serviceUrl:
+   defaultZone: http://localhost:8761/eureka/

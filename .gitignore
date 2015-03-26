@@ -1,0 +1,12 @@
+# Directories #
+/*/build/
+/*/bin/
+/*/target/
+/.settings/
+/*/.settings/
+
+
+# files #
+.project
+.classpath
+.springBeans
