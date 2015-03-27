@@ -20,7 +20,7 @@ import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.connect.UsersConnectionRepository;
 
-import com.referaice.model.entitties.login.SocialMongoConnection;
+import com.referaice.model.entitties.SocialMongoConnection;
 import com.referaice.model.repository.mongo.SocialMongoConnectionRepository;
 
 public class MongoUsersConnectionRepository implements UsersConnectionRepository {

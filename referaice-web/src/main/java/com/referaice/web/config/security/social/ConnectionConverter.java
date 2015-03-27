@@ -8,7 +8,7 @@ import org.springframework.social.connect.ConnectionFactory;
 import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.stereotype.Component;
 
-import com.referaice.model.entitties.login.SocialMongoConnection;
+import com.referaice.model.entitties.SocialMongoConnection;
 
 /**
  * A converter class between Mongo document and Spring social connection.

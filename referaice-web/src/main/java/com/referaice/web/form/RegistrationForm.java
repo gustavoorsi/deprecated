@@ -5,7 +5,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.referaice.model.entitties.login.SocialMediaService;
+import com.referaice.model.entitties.SocialMediaService;
 
 public class RegistrationForm {
 

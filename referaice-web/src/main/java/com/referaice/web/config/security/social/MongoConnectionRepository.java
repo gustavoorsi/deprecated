@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import com.referaice.model.entitties.login.SocialMongoConnection;
+import com.referaice.model.entitties.SocialMongoConnection;
 import com.referaice.model.repository.mongo.SocialMongoConnectionRepository;
 
 public class MongoConnectionRepository implements ConnectionRepository {
