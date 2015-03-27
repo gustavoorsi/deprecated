@@ -1,7 +1,6 @@
 package com.referaice.web.config.security.social;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,8 +16,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
+import org.springframework.social.ResourceNotFoundException;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionData;
 import org.springframework.social.connect.ConnectionFactoryLocator;
@@ -31,16 +30,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import ch.qos.logback.core.rolling.helper.MonoTypedConverter;
-
-import com.mongodb.WriteConcern;
+import com.referaice.model.entitties.SocialMongoConnection;
+import com.referaice.model.repository.mongo.SocialMongoConnectionRepository;
 
 public class MongoConnectionRepository implements ConnectionRepository {
 
 	private final String userId;
 
 	private final MongoTemplate mongoTemplate;
-	
+
 	private final SocialMongoConnectionRepository socialMongoConnectionRepository;
 
 	private final ConnectionConverter converter;
@@ -60,33 +58,30 @@ public class MongoConnectionRepository implements ConnectionRepository {
 	}
 
 	private List<Connection<?>> runQuery(Query query) {
-		List<MongoConnection> results = mongoTemplate.find(query, MongoConnection.class);
+		List<SocialMongoConnection> results = mongoTemplate.find(query, SocialMongoConnection.class);
 		List<Connection<?>> l = new ArrayList<Connection<?>>();
-		for (MongoConnection mc : results) {
+		for (SocialMongoConnection mc : results) {
 			l.add(converter.convert(mc));
 		}
 
 		return l;
 	}
-	
-	private List<Connection<?>> runConverter( List<MongoConnection> mongoConnections ){
-		
+
+	private List<Connection<?>> runConverter(List<SocialMongoConnection> mongoConnections) {
+
 		List<Connection<?>> l = new ArrayList<Connection<?>>();
-		for( MongoConnection mc : mongoConnections ){
-			l.add( converter.convert(mc) );
+		for (SocialMongoConnection mc : mongoConnections) {
+			l.add(converter.convert(mc));
 		}
-		
+
 		return l;
 	}
 
 	public MultiValueMap<String, Connection<?>> findAllConnections() {
-		
-		PageRequest pageParam = new PageRequest(0, 2, new Sort(Sort.Direction.ASC, "providerId"));
-		List<MongoConnection> mongoConnections = socialMongoConnectionRepository.findByUserId(userId, pageParam);
-		List<Connection<?>> resultList = runConverter(mongoConnections);
 
-//		Query q = query(where("userId").is(userId)).with( new Sort(Sort.Direction.ASC, "providerId") ).with(new Sort(Sort.Direction.ASC, "rank"));
-//		List<Connection<?>> resultList = runQuery(q);
+		PageRequest pageParam = new PageRequest(0, 2, new Sort(Sort.Direction.ASC, "providerId"));
+		List<SocialMongoConnection> mongoConnections = socialMongoConnectionRepository.findByUserId(userId, pageParam);
+		List<Connection<?>> resultList = runConverter(mongoConnections);
 
 		MultiValueMap<String, Connection<?>> connections = new LinkedMultiValueMap<String, Connection<?>>();
 		Set<String> registeredProviderIds = connectionFactoryLocator.registeredProviderIds();
@@ -104,15 +99,11 @@ public class MongoConnectionRepository implements ConnectionRepository {
 	}
 
 	public List<Connection<?>> findConnections(String providerId) {
-		
+
 		PageRequest pageable = new PageRequest(0, 2, new Sort(Sort.Direction.ASC, "providerId"));
-		List<MongoConnection> mongoConnections = socialMongoConnectionRepository.findByUserIdAndProviderId(userId, providerId, pageable);
+		List<SocialMongoConnection> mongoConnections = socialMongoConnectionRepository.findByUserIdAndProviderId(userId, providerId, pageable);
 		List<Connection<?>> resultList = runConverter(mongoConnections);
-		
 		return resultList;
-		
-//		Query q = new Query(where("userId").is(userId).and("providerId").is(providerId)).with( new Sort(Sort.Direction.ASC, "rank") );
-//		return runQuery(q);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -136,7 +127,7 @@ public class MongoConnectionRepository implements ConnectionRepository {
 		Criteria criteria = where("userId").is(userId);
 		criteria.orOperator(lc.toArray(new Criteria[lc.size()]));
 
-		Query q = new Query(criteria).with( new Sort(Sort.Direction.ASC, "providerId") ).with( new Sort(Sort.Direction.ASC, "rank") );
+		Query q = new Query(criteria).with(new Sort(Sort.Direction.ASC, "providerId")).with(new Sort(Sort.Direction.ASC, "rank"));
 
 		List<Connection<?>> resultList = runQuery(q);
 
@@ -163,12 +154,11 @@ public class MongoConnectionRepository implements ConnectionRepository {
 	public Connection<?> getConnection(ConnectionKey connectionKey) {
 		try {
 
-			Query q = query(where("userId").is(userId).and("providerId").is(connectionKey.getProviderId()).and("providerUserId")
-					.is(connectionKey.getProviderUserId()));
+			SocialMongoConnection socialMongoConnection = socialMongoConnectionRepository.findByUserIdAndProviderIdAndProviderUserId(userId,
+					connectionKey.getProviderId(), connectionKey.getProviderUserId()).orElseThrow(
+					() -> new ResourceNotFoundException(connectionKey.getProviderId(), "Not found"));
 
-			MongoConnection mc = mongoTemplate.findOne(q, MongoConnection.class);
-
-			return converter.convert(mc);
+			return converter.convert(socialMongoConnection);
 
 		} catch (EmptyResultDataAccessException e) {
 			throw new NoSuchConnectionException(connectionKey);
@@ -202,18 +192,16 @@ public class MongoConnectionRepository implements ConnectionRepository {
 		try {
 			ConnectionData data = connection.createData();
 
-			Query q = query(where("userId").is(userId).and("providerId").is(data.getProviderId()));
-			MongoConnection cnn = mongoTemplate.findOne(q, MongoConnection.class);
+			SocialMongoConnection cnn = socialMongoConnectionRepository.findByUserIdAndProviderId(userId, data.getProviderId()).orElseThrow(
+					() -> new ResourceNotFoundException(data.getProviderId(), "Not found"));
 
 			int rank = cnn == null ? 1 : cnn.getRank() + 1;
 
-			MongoConnection mongoCnn = converter.convert(connection);
+			SocialMongoConnection mongoCnn = converter.convert(connection);
 			mongoCnn.setUserId(userId);
 			mongoCnn.setRank(rank);
-			
-			socialMongoConnectionRepository.insert(mongoCnn);
-			
-//			mongoTemplate.insert(mongoCnn);
+
+			socialMongoConnectionRepository.save(mongoCnn);
 
 		} catch (DuplicateKeyException e) {
 			throw new DuplicateConnectionException(connection.getKey());
@@ -222,53 +210,40 @@ public class MongoConnectionRepository implements ConnectionRepository {
 
 	@Transactional
 	public void updateConnection(Connection<?> connection) {
-		MongoConnection mongoCnn = converter.convert(connection);
-		mongoCnn.setUserId(userId);
-		try {
-//			mongoTemplate.setWriteConcern(WriteConcern.SAFE);
-			
-			List<MongoConnection> mongoConnections = socialMongoConnectionRepository.findByUserIdAndProviderIdAndProviderUserId(userId, mongoCnn.getProviderId(), mongoCnn.getProviderUserId());
-			
-			if( !mongoConnections.isEmpty() && mongoConnections.size() == 1 ){
-				mongoCnn.setId( mongoConnections.get(0).getId() );
-				
-				socialMongoConnectionRepository.save(mongoCnn);
-//				mongoTemplate.save(mongoCnn);
-			}
-			
+		// convert the social connection to an instance of our domain social connection. Connection -> SocialMongoConnection
+		SocialMongoConnection toSave = converter.convert(connection);
 
-			
-		} catch (DuplicateKeyException e) {
-			Query q = query(where("userId").is(userId).and("providerId").is(mongoCnn.getProviderId()).and("providerUserId").is(mongoCnn.getProviderUserId()));
+		// lets find the already persisted connection just to get the id. (it would be better to make userId + providerId + providerUserId a composite key in
+		// mongo).
+		SocialMongoConnection socialMongoConnection = socialMongoConnectionRepository.findByUserIdAndProviderIdAndProviderUserId(userId,
+				toSave.getProviderId(), toSave.getProviderUserId()).orElseThrow(() -> new ResourceNotFoundException(toSave.getProviderId(), "Not found"));
 
-			Update update = Update.update("expireTime", mongoCnn.getExpireTime()).set("accessToken", mongoCnn.getAccessToken())
-					.set("profileUrl", mongoCnn.getProfileUrl()).set("imageUrl", mongoCnn.getImageUrl()).set("displayName", mongoCnn.getDisplayName());
+		// save the values.
+		toSave.setUserId(userId);
+		toSave.setId(socialMongoConnection.getId()); // set the mongo primary key so it updates the existing social connection instead of creating a new one.
 
-			mongoTemplate.findAndModify(q, update, MongoConnection.class);
-		}
+		// update.
+		socialMongoConnectionRepository.save(toSave);
+
 	}
 
 	@Transactional
 	public void removeConnections(String providerId) {
-		Query q = query(where("userId").is(userId).and("providerId").is(providerId)).with(new Sort(Sort.Direction.DESC, "rank"));
-
-		mongoTemplate.remove(q, MongoConnection.class);
+		socialMongoConnectionRepository.deleteByUserIdAndProviderId(providerId, providerId);
 	}
 
 	@Transactional
 	public void removeConnection(ConnectionKey connectionKey) {
-		Query q = query(where("userId").is(userId).and("providerId").is(connectionKey.getProviderId()).and("providerUserId")
-				.is(connectionKey.getProviderUserId()));
-		mongoTemplate.remove(q, MongoConnection.class);
+
+		socialMongoConnectionRepository.deleteByUserIdAndProviderIdAndProviderUserId(userId, connectionKey.getProviderId(), connectionKey.getProviderUserId());
 	}
 
 	// internal helpers
 
 	private Connection<?> findPrimaryConnection(String providerId) {
-		Query q = query(where("userId").is(userId).and("providerId").is(providerId).and("rank").is(1));
 
-		MongoConnection mc = mongoTemplate.findOne(q, MongoConnection.class);
-		return converter.convert(mc);
+		SocialMongoConnection socialMongoConnection = socialMongoConnectionRepository.findByUserIdAndProviderIdAndRank(providerId, providerId, 1).orElse(null);
+		return converter.convert(socialMongoConnection);
 	}
 
 	private <A> String getProviderId(Class<A> apiType) {

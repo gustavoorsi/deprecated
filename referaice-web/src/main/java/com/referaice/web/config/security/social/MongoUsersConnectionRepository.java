@@ -20,6 +20,9 @@ import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.connect.UsersConnectionRepository;
 
+import com.referaice.model.entitties.SocialMongoConnection;
+import com.referaice.model.repository.mongo.SocialMongoConnectionRepository;
+
 public class MongoUsersConnectionRepository implements UsersConnectionRepository {
 
 	private final MongoTemplate mongoTemplate;
@@ -54,13 +57,11 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
 	public List<String> findUserIdsWithConnection(Connection<?> connection) {
 
 		ConnectionKey key = connection.getKey();
+		
+		List<SocialMongoConnection> results = socialMongoConnectionRepository.findByProviderIdAndProviderUserId(key.getProviderId(), key.getProviderUserId());
 
-		Query q = query(where("providerId").is(key.getProviderId()).and("providerUserId").is(key.getProviderUserId()));
-		q.fields().include("userId");
-
-		List<MongoConnection> results = mongoTemplate.find(q, MongoConnection.class);
 		List<String> localUserIds = new ArrayList<String>();
-		for (MongoConnection mc : results) {
+		for (SocialMongoConnection mc : results) {
 			localUserIds.add(mc.getUserId());
 		}
 
@@ -80,9 +81,9 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
 		Query q = query(where("providerId").is(providerId).and("providerUserId").in(new ArrayList<String>(providerUserIds)));
 		q.fields().include("userId");
 
-		List<MongoConnection> results = mongoTemplate.find(q, MongoConnection.class);
+		List<SocialMongoConnection> results = mongoTemplate.find(q, SocialMongoConnection.class);
 		Set<String> userIds = new HashSet<String>();
-		for (MongoConnection mc : results) {
+		for (SocialMongoConnection mc : results) {
 			userIds.add(mc.getUserId());
 		}
 

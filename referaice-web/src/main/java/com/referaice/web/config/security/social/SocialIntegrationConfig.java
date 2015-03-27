@@ -18,6 +18,8 @@ import org.springframework.social.connect.web.ConnectController;
 import org.springframework.social.linkedin.connect.LinkedInConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
 
+import com.referaice.model.repository.mongo.SocialMongoConnectionRepository;
+
 //@formatter:off
 /**
  * 
