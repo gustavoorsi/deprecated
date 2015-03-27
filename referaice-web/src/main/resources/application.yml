@@ -29,8 +29,8 @@ management:
     
   
       
-spring.social.linkedin.app.id: 
-spring.social.linkedin.app.secret: 
+spring.social.linkedin.app.id: 78j4k3ze8ap1mm
+spring.social.linkedin.app.secret: IpDjJKhGfd12tUEK
 
 logginglevel.org.springframework.web: DEBUG
 logginglevel.com.referaice: DEBUG

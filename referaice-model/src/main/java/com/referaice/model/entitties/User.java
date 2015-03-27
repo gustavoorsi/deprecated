@@ -1,5 +1,7 @@
 package com.referaice.model.entitties;
 
+import com.referaice.model.entitties.login.SocialMediaService;
+
 public class User extends BaseEntity<String> {
 
 	private String firstName;
@@ -20,7 +22,7 @@ public class User extends BaseEntity<String> {
 	}
 
 	public User(User user) {
-		super.setId(user.getId());
+		setId(user.getId());
 		this.companyWebsite = user.companyWebsite;
 		this.firstName = user.firstName;
 		this.lastName = user.lastName;
