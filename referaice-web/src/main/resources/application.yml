@@ -2,12 +2,16 @@ server:
   port: 80
 
 spring:
+  data:
+    mongodb:
+      uri:  mongodb://127.0.0.1:27017/referaiceMongoDB
   application:
     name: referaice-web
   cloud:
     config:
       discovery:
         enabled: true
+        
         
 eureka:
   instance:
@@ -21,11 +25,13 @@ eureka:
 management:
   context-path: /actuator
   security:
-    role: ADMIN #ADMIN is the default role, but we explicitly set it. 
+    role: ADMIN #ADMIN is the default role, but we explicitly set it.
+    
+  
       
-
-spring.social.twitter.consumer.key: 
-spring.social.twitter.consumer.secret: 
-
 spring.social.linkedin.app.id: 
 spring.social.linkedin.app.secret: 
+
+logginglevel.org.springframework.web: DEBUG
+logginglevel.com.referaice: DEBUG
+logginglevel.org.thymeleaf: DEBUG

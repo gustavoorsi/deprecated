@@ -9,4 +9,11 @@
 # files #
 .project
 .classpath
-.springBeans
+.springBeans/referaice-web/
+/referaice-web/
+/referaice-cloudconfig/
+/referaice-model/
+/referaice-service-discovery-eureka/
+/referaice-common-api/
+/referaice-constants/
+/referaice-service/
