@@ -1,80 +1,86 @@
 <!DOCTYPE html>
 
 <html layout:decorator="layouts/basic_layout" lan="en">
-
-<head>
-<!--/*  Each token will be replaced by their respective titles in the resulting page. */-->
-<title>Referaice.com</title>
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-<meta name="author" content="Gustavo Orsi" />
-<link rel="icon" href="http://getbootstrap.com/favicon.ico" />
-
-<!-- CSS resources -->
-<link href="../../../../resources/css/bootstrap/bootstrap.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap/bootstrap.css}" />
-<link href="../../../../resources/css/bootstrap/signin.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap/signin.css}" />
-<link href="../../../../resources/css/bootstrap/social-buttons-3.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap/social-buttons-3.css}" />
-<link href="../../../../resources/css/bootstrap/bootstrap-theme.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap/bootstrap-theme.css}" />
-
-</head>
-
-<body>
-
-	<!-- content -->
-	<!--/* Content of this page will be decorated by the elements of basic_layout.html (layouts/basic_layout) */-->
-	<div layout:fragment="content" class="container">
-
-		<form class="form-signin" style="padding-top: 30px" th:action="@{/login/authenticate}" method="POST">
-
-			<div th:if="${param.error}" class="alert alert-error">Invalid username and password.</div>
-			<div th:if="${param.logout}" class="alert alert-success">You have been logged out.</div>
-
-			<h2 class="form-signin-heading">Please sign in</h2>
-			<label for="username" class="sr-only">Email address</label> <input type="email" id="username" name="username" class="form-control"
-				placeholder="Email address" required="true" autofocus="true" /> <label for="password" class="sr-only">Password</label> <input type="password" id="password"
-				name="password" class="form-control" placeholder="Password" required="true" />
-			<div class="checkbox">
-				<label> <input type="checkbox" value="remember-me"> Remember me</input>
-				</label>
-			</div>
-			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-		</form>
-
-		<!-- signup -->
-		<div id="signup" >
-			<div class="form-group col-lg-4">
-				<a th:href="@{/signup}" href="/signup">Create user account</a>
-			</div>
-
-			<div class="panel panel-default">
-				<div class="panel-body">
-					<h2>Sign in by using social provider</h2>
-					<div class="row social-button-row">
-						<div class="col-lg-4">
-							<form class="form-signin" th:action="@{/auth/linkedin}" method="POST">
-								<input type="hidden" name="scope" value="r_emailaddress" />
-								<button class="btn btn-linkedin" type="submit">
-									<i class="icon-linkedin"></i> | Sign in with Linkedin
-								</button>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div><!-- /signup -->
-
-	</div>
-	<!-- /content -->
-
-
-	<!-- Bootstrap core JavaScript
-    ================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="../../../../resources/js/jquery/jquery.js" th:src="@{/resources/js/jquery/jquery.js}"></script>
-	<script src="../../../../resources/js/bootstrap/bootstrap.js" th:src="@{/resources/js/bootstrap/bootstrap.js}"></script>
-
-</body>
-
+	
+	<head>
+		<!--/*  Each token will be replaced by their respective titles in the resulting page. */-->
+		<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">Layout title</title>
+		<meta charset="utf-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		
+		<!-- CSS resources -->
+	    <link href="../../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}"/>
+	    <link href="../../../../resources/css/signin.css" rel="stylesheet" media="screen" th:href="@{/resources/css/signin.css}"/>
+		<link href="../../../../resources/css/bootstrap/bootstrap.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap/bootstrap.css}"/>
+		<link href="../../../../resources/css/bootstrap/social-buttons-3.css" rel="stylesheet" media="screen" th:href="@{/resources/css/social-buttons-3.css}"/>
+		<link href="../../../../resources/css/bootstrap/bootstrap-theme.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap-theme.css}"/>
+	    
+		<!-- javascript resources -->
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+	    <script src="../../../../resources/js/bootstrap/bootstrap.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+		<script src="../../../../resources/js/knockout/knockout.js" th:src="@{/resources/js/knockout.js}"></script>
+	</head>
+	
+	<body>
+	
+		<!-- content -->
+		<!--/* Content of this page will be decorated by the elements of basic_layout.html (layouts/basic_layout) */-->
+		<div layout:fragment="content">
+		
+			<!-- row -->
+			<div class="row">
+					
+				<form class="form-signin" th:action="@{/login/authenticate}" method="POST">
+				
+					<div th:if="${param.error}" class="alert alert-error">
+	                    Invalid username and password.
+	                </div>
+	                <div th:if="${param.logout}" class="alert alert-success">
+	                    You have been logged out.
+	                </div>
+				
+			        <h2 class="form-signin-heading">Please sign in</h2>
+			        <label for="username" class="sr-only">Email address</label>
+			        <input type="email" id="username" name="username" class="form-control" placeholder="Email address" required="true" autofocus="true"/>
+			        <label for="password" class="sr-only">Password</label>
+			        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="true"/>
+			        <div class="checkbox">
+			          <label>
+			            <input type="checkbox" value="remember-me"> Remember me</input>
+			          </label>
+			        </div>
+			        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+		      </form>
+		      
+			</div><!-- /row -->
+			
+			<!-- row -->
+			<div class="row">
+                <div class="form-group col-lg-4">
+                    <a th:href="@{/signup}" href="/signup">Create user account</a>
+                </div>
+            </div><!-- /row -->
+            
+           <!-- row -->
+		   <div class="row">
+            	<div class="panel panel-default">
+			        <div class="panel-body">
+			            <h2>Sign in by using social provider</h2>
+			            <div class="row social-button-row">
+			                <div class="col-lg-4">
+			                	<form class="form-signin" th:action="@{/auth/linkedin}" method="POST">
+			                		<input type="hidden" name="scope" value="" />
+			                		<button class="btn btn-linkedin" type="submit"><i class="icon-linkedin"></i> | Sign in with Linkedin</button>
+			                	</form>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+            </div><!-- /row -->
+		
+		</div> <!-- /content -->
+	
+	</body>
+	
 </html>

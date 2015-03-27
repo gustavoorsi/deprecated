@@ -2,39 +2,37 @@
 
 <html lang="en">
 
-<head>
-<!--/*  Each token will be replaced by their respective titles in the resulting page. */-->
-<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">Referaice.com</title>
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-<meta name="author" content="Gustavo Orsi" />
-<link rel="icon" href="http://getbootstrap.com/favicon.ico" />
-
-<!-- CSS resources -->
-<link href="../../../../resources/css/bootstrap/bootstrap.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap/bootstrap.css}" />
-
-</head>
-
-<body>
-
-	<!--/*  Multiple fragments may be defined in one file */-->
-	<div id="footer" th:fragment="footer">
-
-		<!-- FOOTER -->
-		<footer>
-			<p class="pull-right">
-				<a href="#">Back to top</a>
-			</p>
-			<p>
-				© 2014 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a>
-			</p>
-		</footer>
-
-	</div>
-
-</body>
+	<head>
+		<!--/*  Each token will be replaced by their respective titles in the resulting page. */-->
+		<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">Layout title</title>
+		<meta charset="utf-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		
+		<!-- CSS resources -->
+	    <link href="../../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}"/>
+		<link href="../../../../resources/css/bootstrap/bootstrap.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap/bootstrap.css}"/>
+	    
+		<!-- javascript resources -->
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+	    <script src="../../../../resources/js/bootstrap/bootstrap.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+		<script src="../../../../resources/js/knockout/knockout.js" th:src="@{/resources/js/knockout.js}"></script>
+	</head>
+	
+	<body>
+		
+		<!--/*  Multiple fragments may be defined in one file */-->
+		<div id="footer" th:fragment="footer">
+		
+			<footer class="footer">
+			  <div class="container">
+				<p class="text-muted">Referaice 2015</p>
+			  </div>
+			</footer>
+			
+		</div>
+		
+	</body>
 
 </html>
 
