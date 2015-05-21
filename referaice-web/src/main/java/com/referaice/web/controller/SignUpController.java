@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.referaice.model.entitties.SocialMediaService;
 import com.referaice.model.entitties.User;
+import com.referaice.model.entitties.login.SocialMediaService;
 import com.referaice.web.form.RegistrationForm;
 import com.referaice.web.service.UserService;
 import com.referaice.web.service.exceptions.DuplicateEmailException;

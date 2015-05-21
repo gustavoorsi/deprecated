@@ -1,18 +1,3 @@
-/*
- * Copyright 2012 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.referaice.model.entitties.login;
 
 import org.bson.types.ObjectId;
@@ -26,8 +11,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * 
  */
 @Document(collection = "socialConnections")
-@CompoundIndexes({ @CompoundIndex(name = "connections_rank_idx", def = "{'userId': 1, 'providerId': 1, 'rank': 1}", unique = true),
-		@CompoundIndex(name = "connections_primary_idx", def = "{'userId': 1, 'providerId': 1, 'providerUserId': 1}", unique = true) })
+// @formatter:off
+@CompoundIndexes({ 
+		@CompoundIndex(name = "connections_rank_idx", def = "{'userId': 1, 'providerId': 1, 'rank': 1}", unique = true),
+		@CompoundIndex(name = "connections_primary_idx", def = "{'userId': 1, 'providerId': 1, 'providerUserId': 1}", unique = true) 
+				})
+//@formatter:on
 public class SocialMongoConnection {
 	@Id
 	private ObjectId id;
@@ -35,18 +24,18 @@ public class SocialMongoConnection {
 //	@NotEmpty
 	String userId;
 
-//	@NotEmpty
+	// @NotEmpty
 	String providerId;
 
 	String providerUserId;
 
-//	@Range(min = 1, max = 9999)
+	// @Range(min = 1, max = 9999)
 	int rank; // not null
 	String displayName;
 	String profileUrl;
 	String imageUrl;
 
-//	@NotEmpty
+	// @NotEmpty
 	String accessToken;
 
 	String secret;
@@ -56,8 +45,8 @@ public class SocialMongoConnection {
 	public ObjectId getId() {
 		return id;
 	}
-	
-	public void setId( ObjectId id ){
+
+	public void setId(ObjectId id) {
 		this.id = id;
 	}
 

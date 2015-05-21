@@ -1,6 +1,18 @@
 package com.referaice.consants;
 
 public final class ReferaiceConstants {
+	
+	
+	public static final class API {
+		public static final String RESOURCE_ID = "api_resource";
+		public static final String API_PATH = "/api/v1";
+		
+		// REFERRING
+		public static final String REFERRING = API_PATH + "/referring";
+		public static final String GET_REFERRING = "/{email}";
+	}
+	
+	
 
 	public static final class WEB {
 		// Spring Boot Actuator services

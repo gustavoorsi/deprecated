@@ -192,8 +192,7 @@ public class MongoConnectionRepository implements ConnectionRepository {
 		try {
 			ConnectionData data = connection.createData();
 
-			SocialMongoConnection cnn = socialMongoConnectionRepository.findByUserIdAndProviderId(userId, data.getProviderId()).orElseThrow(
-					() -> new ResourceNotFoundException(data.getProviderId(), "Not found"));
+			SocialMongoConnection cnn = socialMongoConnectionRepository.findByUserIdAndProviderId(userId, data.getProviderId()).orElse(null);
 
 			int rank = cnn == null ? 1 : cnn.getRank() + 1;
 
@@ -234,7 +233,6 @@ public class MongoConnectionRepository implements ConnectionRepository {
 
 	@Transactional
 	public void removeConnection(ConnectionKey connectionKey) {
-
 		socialMongoConnectionRepository.deleteByUserIdAndProviderIdAndProviderUserId(userId, connectionKey.getProviderId(), connectionKey.getProviderUserId());
 	}
 

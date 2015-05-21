@@ -35,6 +35,7 @@
 	<modules>
 		<module>referaice-model</module>
 		<module>referaice-common-api</module>
+		<module>referaice-searchengine-api</module>
 		<module>referaice-web</module>
 		<module>referaice-service-discovery-eureka</module>
 		<module>referaice-service</module>

@@ -1,13 +1,15 @@
 server:
  port: 8888
  
+
 spring:
   application:
-    name: CONFIGSERVER
+    name: referaice-configserver
   cloud:
     config:
       server:
-        uri: https://github.com/gustavoorsi/deprecated/config
+        git:
+          uri: https://github.com/spring-cloud-samples/config-repo
         
 eureka:
  client:

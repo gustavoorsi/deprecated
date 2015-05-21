@@ -1,5 +1,7 @@
 package com.referaice.model.entitties;
 
+import com.referaice.model.entitties.login.SocialMediaService;
+
 public class User extends BaseEntity<String> {
 
 	private String firstName;

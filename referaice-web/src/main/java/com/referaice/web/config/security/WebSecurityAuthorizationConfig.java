@@ -63,7 +63,7 @@ public class WebSecurityAuthorizationConfig extends WebSecurityConfig {
     		.and()
             	.authorizeRequests()
                     .antMatchers("/**").hasRole("USER")
-    		// Configures de default access denied page.
+    		// Configures the default access denied page.
             .and()
                 .exceptionHandling()
         			.accessDeniedPage("/accessDenied")
